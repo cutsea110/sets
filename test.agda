@@ -1,15 +1,16 @@
 open import Agda.Primitive using (lzero)
-open import Relation.Unary
 open import Data.Nat
 open import Data.Unit using (⊤; tt)
 open import Data.String
 open import Data.Empty using (⊥)
+open import Function using (_∘_; id; flip; const)
+open import Relation.Unary
 
 Nat : Pred ℕ lzero
-Nat = λ _ → ⊤
+Nat = const ⊤
 
 Str : Pred String lzero
-Str = λ _ → ⊤
+Str = const ⊤
 
 foo : 42 ∈ Nat
 foo = tt
@@ -18,44 +19,16 @@ bar : "Hello" ∈ Str
 bar = tt
 
 buz : ∀ (n : ℕ) → n ∉ ∅
-buz = λ n z → z
+buz = const id
 
 quz : ∀ (s : String) → s ∈ U
-quz = λ s → tt
+quz = const tt
 
 test : ｛ 42 ｝ ⊆ U
-test = λ {x} _ → tt
+test = const tt
 
 test2 : ｛ "Hello" ｝ ⊆ U
-test2 = λ {x} _ → tt
-
-open import Relation.Binary.PropositionalEquality
-open import Data.Product
-
-data Evenℕ : Set where
-  even : (n : ℕ) → (p : ∃ λ k → n ≡ k * 2) → Evenℕ
-
-data Oddℕ : Set where
-  odd : (n : ℕ) → (p : ∃ λ k → n ≡ 1 + k * 2) → Oddℕ
-
-x : Evenℕ
-x = even 4 (2 , refl)
-
-y : Oddℕ
-y = odd 9 (4 , refl)
-
-EvenNat : Pred Evenℕ lzero
-EvenNat = λ _ → ⊤
-
-OddNat : Pred Oddℕ lzero
-OddNat = λ _ → ⊤
-
-test3 : odd 3 (1 , refl) ∈ OddNat
-test3 = tt
-
-test4 : even 8 (4 , refl) ∈ EvenNat
-test4 = tt
-
+test2 = const tt
 
 data Parity : ℕ → Set where
   even : (k : ℕ) → Parity (k * 2)
@@ -67,20 +40,24 @@ parity (suc n) with parity n
 parity (suc .(k * 2)) | even k = odd k
 parity (suc .(suc (k * 2))) | odd k = even (suc k)
 
-EvenNat' : Pred ℕ lzero
-EvenNat' n with parity n
-EvenNat' .(k * 2) | even k = ⊤
-EvenNat' .(suc (k * 2)) | odd k = ⊥
-OddNat' : Pred ℕ lzero
-OddNat' n with parity n
-OddNat' .(k * 2) | even k = ⊥
-OddNat' .(suc (k * 2)) | odd k = ⊤
+Evenℕ : Pred ℕ lzero
+Evenℕ n with parity n
+Evenℕ .(k * 2) | even k = ⊤
+Evenℕ .(suc (k * 2)) | odd k = ⊥
 
-test5 : 3 ∈ OddNat'
+Oddℕ : Pred ℕ lzero
+Oddℕ n with parity n
+Oddℕ .(k * 2) | even k = ⊥
+Oddℕ .(suc (k * 2)) | odd k = ⊤
+
+test3 : 3 ∈ Oddℕ
+test3 = tt
+
+test4 : 3 ∉ Evenℕ
+test4 = id
+
+test5 : 8 ∈ Evenℕ
 test5 = tt
-test6 : 3 ∉ EvenNat'
-test6 = λ z → z
-test7 : 8 ∈ EvenNat'
-test7 = tt
-test8 : 21 ∉ EvenNat'
-test8 = λ z → z
+
+test6 : 21 ∉ Evenℕ
+test6 = id
