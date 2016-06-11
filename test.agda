@@ -80,10 +80,10 @@ record _≈_ {a ℓ} {S : Set a} (A : Pred S ℓ) (B : Pred S ℓ) : Set (a ⊔ 
     eql : A ⊆ B × A ⊇ B
 
 module _  where
-  open import Data.Nat.Primality
+  open import Data.Nat.Primality using (Prime)
   open import Data.Empty using (⊥-elim)
   open import Data.Fin hiding (_<_)
-  open import Data.Nat.Divisibility
+  open import Data.Nat.Divisibility using (divides; _∣_)
   open import Relation.Binary.PropositionalEquality using (cong)
 
 
