@@ -82,40 +82,35 @@ record _≈_ {a ℓ} {S : Set a} (A : Pred S ℓ) (B : Pred S ℓ) : Set (a ⊔ 
 module _  where
   open import Data.Nat.Primality using (Prime)
   open import Data.Empty using (⊥-elim)
-  open import Data.Fin hiding (_<_)
+  open import Data.Fin hiding (_<_; _≤_)
   open import Data.Nat.Divisibility using (divides; _∣_)
   open import Relation.Binary.PropositionalEquality using (cong)
 
 
   A : Pred ℕ lzero
-  A n = 2 < n × n < 8 × Prime n
+  A n = 2 < n × n < 10 × Prime n
 
   B : Pred ℕ lzero
   B n = 1 < n × n < 8 × Odd n
 
-  help : ∀ {k} → 2 < (k * 2) → ¬ Prime (k * 2)
-  help {zero} 2<k*2 x = x
-  help {suc zero} (s≤s (s≤s ())) x
-  help {suc (suc k)} (s≤s (s≤s (s≤s z≤n))) x = x zero (divides (suc (suc k)) refl)
+  help : ∀ k → 2 < (k * 2) → ¬ Prime (k * 2)
+  help zero 2<k*2 x = x
+  help (suc zero) (s≤s (s≤s ())) x
+  help (suc (suc k)) (s≤s (s≤s (s≤s z≤n))) x = x zero (divides (suc (suc k)) refl)
 
   A≈B : A ≈ B
   A≈B = record { eql = A⊆B , A⊇B }
     where
       A⊆B : A ⊆ B
       A⊆B {n} prf with parity n
-      A⊆B (proj₁ , proj₂ , ()) | even zero
-      A⊆B (s≤s (s≤s ()) , proj₂ , proj₃) | even (suc zero)
-      A⊆B (proj₁ , proj₂ , proj₃) | even (suc (suc k))
-        = (s≤s (s≤s z≤n)) , (proj₂ , proj₃ zero (divides (suc (suc k)) refl))
-      A⊆B (proj₁ , proj₂ , ()) | odd zero
-      A⊆B (proj₁ , proj₂ , proj₃) | odd (suc zero) = (s≤s (s≤s z≤n)) , (proj₂ , tt)
-      A⊆B (proj₁ , proj₂ , proj₃) | odd (suc (suc k)) = s≤s (s≤s z≤n) , proj₂ , tt
+      A⊆B (proj₁ , proj₂ , proj₃) | even k = ⊥-elim (help k proj₁ proj₃)
+      A⊆B prf | odd k = {!!}
 
       A⊇B : A ⊇ B
       A⊇B {n} prf with parity n
       A⊇B (proj₁ , proj₂ , ()) | even k
-      A⊇B (s≤s () , proj₂ , proj₃) | odd zero
-      A⊇B (proj₁ , proj₂ , proj₃) | odd (suc zero) = (s≤s (s≤s (s≤s z≤n))) , (proj₂ , help₁)
+      A⊇B (s≤s () , prf) | odd zero
+      A⊇B prf | odd (suc zero) = (s≤s (s≤s (s≤s z≤n))) , ((s≤s (s≤s (s≤s (s≤s z≤n)))) , help₁)
         where
           3≢q*2 : ∀ q → 3 ≡ q * 2 → ⊥
           3≢q*2 zero ()
@@ -124,7 +119,8 @@ module _  where
           help₁ : ∀ i → suc (suc (toℕ i)) ∣ 3 → ⊥
           help₁ zero (divides q eq) = ⊥-elim (3≢q*2 q eq)
           help₁ (suc ()) x
-      A⊇B (proj₁ , proj₂ , proj₃) | odd (suc (suc zero)) = (s≤s (s≤s (s≤s z≤n))) , (proj₂ , help₁)
+      A⊇B prf | odd (suc (suc zero))
+        = (s≤s (s≤s (s≤s z≤n))) , ((s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))) , help₁)
         where
           5≢q*2 : ∀ q → 5 ≡ q * 2 → ⊥
           5≢q*2 zero ()
@@ -144,7 +140,8 @@ module _  where
           help₁ (suc zero) (divides q eq) = ⊥-elim (5≢q*3 q eq)
           help₁ (suc (suc zero)) (divides q eq) = ⊥-elim (5≢q*4 q eq)
           help₁ (suc (suc (suc ()))) x
-      A⊇B (proj₁ , proj₂ , proj₃) | odd (suc (suc (suc zero))) = (s≤s (s≤s (s≤s z≤n))) , (proj₂ , help₁)
+      A⊇B prf | odd (suc (suc (suc zero)))
+        = (s≤s (s≤s (s≤s z≤n))) , ((s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))))) , help₁)
         where
           7≢q*2 : ∀ q → 7 ≡ q * 2 → ⊥
           7≢q*2 zero ()
