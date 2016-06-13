@@ -109,8 +109,8 @@ module _  where
       A⊆B prf | odd (suc zero) = s≤s (s≤s z≤n) , (s≤s (s≤s (s≤s (s≤s z≤n))) , tt)
       A⊆B prf | odd (suc (suc zero)) = s≤s (s≤s z≤n) , s≤s (s≤s (s≤s (proj₁ prf))) , tt
       A⊆B prf | odd (suc (suc (suc zero))) = s≤s (s≤s z≤n) , s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n))))))), tt
-      A⊆B (proj₁ , proj₂ , proj₃) | odd (suc (suc (suc (suc zero)))) with proj₃
-      ... | prf = ⊥-elim (prf (suc zero) (divides (suc (suc (suc zero))) refl))
+      A⊆B (proj₁ , proj₂ , proj₃) | odd (suc (suc (suc (suc zero))))
+        = ⊥-elim (proj₃ (suc zero) (divides (suc (suc (suc zero))) refl))
       A⊆B (proj₁ , s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))))) , proj₃) | odd (suc (suc (suc (suc (suc k)))))
 
       A⊇B : A ⊇ B
