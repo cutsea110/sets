@@ -6,7 +6,7 @@ open import Data.String
 open import Data.Empty using (⊥)
 open import Function using (_∘_; id; flip; const)
 open import Relation.Unary
-open import Data.Product using (_×_; _,_)
+open import Data.Product using (_×_; _,_;proj₁)
 open import Relation.Nullary using (¬_)
 
 Nat : Pred ℕ lzero
@@ -80,6 +80,7 @@ record _≈_ {a ℓ} {S : Set a} (A : Pred S ℓ) (B : Pred S ℓ) : Set (a ⊔ 
     eql : A ⊆ B × A ⊇ B
 
 module _  where
+  open import Data.Fin hiding (_<_)
   open import Data.Nat.Primality using (Prime)
   open import Data.Empty using (⊥-elim)
   open import Data.Fin hiding (_<_; _≤_)
@@ -104,7 +105,13 @@ module _  where
       A⊆B : A ⊆ B
       A⊆B {n} prf with parity n
       A⊆B (proj₁ , proj₂ , proj₃) | even k = ⊥-elim (help k proj₁ proj₃)
-      A⊆B prf | odd k = {!!}
+      A⊆B (s≤s () , prf) | odd zero
+      A⊆B prf | odd (suc zero) = s≤s (s≤s z≤n) , (s≤s (s≤s (s≤s (s≤s z≤n))) , tt)
+      A⊆B prf | odd (suc (suc zero)) = s≤s (s≤s z≤n) , s≤s (s≤s (s≤s (proj₁ prf))) , tt
+      A⊆B prf | odd (suc (suc (suc zero))) = s≤s (s≤s z≤n) , s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n))))))), tt
+      A⊆B (proj₁ , proj₂ , proj₃) | odd (suc (suc (suc (suc zero)))) with proj₃
+      ... | prf = ⊥-elim (prf (suc zero) (divides (suc (suc (suc zero))) refl))
+      A⊆B (proj₁ , s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))))) , proj₃) | odd (suc (suc (suc (suc (suc k)))))
 
       A⊇B : A ⊇ B
       A⊇B {n} prf with parity n
