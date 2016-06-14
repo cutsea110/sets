@@ -15,23 +15,25 @@ Nat = const ⊤
 Str : Pred String lzero
 Str = const ⊤
 
-foo : 42 ∈ Nat
-foo = tt
+module _ where
 
-bar : "Hello" ∈ Str
-bar = tt
+  foo : 42 ∈ Nat
+  foo = tt
 
-buz : ∀ (n : ℕ) → n ∉ ∅
-buz = const id
+  bar : "Hello" ∈ Str
+  bar = tt
 
-quz : ∀ (s : String) → s ∈ U
-quz = const tt
+  buz : ∀ (n : ℕ) → n ∉ ∅
+  buz = const id
 
-test : ｛ 42 ｝ ⊆ U
-test = const tt
+  quz : ∀ (s : String) → s ∈ U
+  quz = const tt
 
-test2 : ｛ "Hello" ｝ ⊆ U
-test2 = const tt
+  test : ｛ 42 ｝ ⊆ U
+  test = const tt
+
+  test2 : ｛ "Hello" ｝ ⊆ U
+  test2 = const tt
 
 data Parity : ℕ → Set where
   even : (k : ℕ) → Parity (k * 2)
@@ -59,21 +61,25 @@ Evenℕ = Even
 Oddℕ : Pred ℕ lzero
 Oddℕ = Odd
 
-test3 : 3 ∈ Oddℕ
-test3 = tt
+module _ where
 
-test4 : 3 ∉ Evenℕ
-test4 = id
+  test3 : 3 ∈ Oddℕ
+  test3 = tt
 
-test5 : 8 ∈ Evenℕ
-test5 = tt
+  test4 : 3 ∉ Evenℕ
+  test4 = id
 
-test6 : 21 ∉ Evenℕ
-test6 = id
+  test5 : 8 ∈ Evenℕ
+  test5 = tt
+
+  test6 : 21 ∉ Evenℕ
+  test6 = id
 
 
 -- data _≈_ {a ℓ} {S : Set a} : (A : Pred S ℓ) → (B : Pred S ℓ) → Set (a ⊔ lsuc ℓ) where
 --   eql :  ∀ {A B} → A ⊆ B × A ⊇ B → A ≈ B
+
+infix 3 _≈_
 
 record _≈_ {a ℓ} {S : Set a} (A : Pred S ℓ) (B : Pred S ℓ) : Set (a ⊔ lsuc ℓ) where
   field
@@ -181,3 +187,16 @@ module _  where
           help₁ (suc (suc (suc (suc zero)))) (divides q eq) = ⊥-elim (7≢q*6 q eq)
           help₁ (suc (suc (suc (suc (suc ()))))) x
       A⊇B (proj₁ , s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))) , proj₃) | odd (suc (suc (suc (suc k))))
+
+module _ where
+  open import Data.Sum using (_⊎_; inj₁; inj₂)
+
+  even∪odd≡nat : Oddℕ ∪ Evenℕ ≈ Nat
+  even∪odd≡nat = record { eql = helpₗ , helpᵣ }
+    where
+      helpₗ : Oddℕ ∪ Evenℕ ⊆ Nat
+      helpₗ prf = tt
+      helpᵣ : Oddℕ ∪ Evenℕ ⊇ Nat
+      helpᵣ {x} prf with parity x
+      helpᵣ prf | even k = inj₂ tt
+      helpᵣ prf | odd k = inj₁ tt
