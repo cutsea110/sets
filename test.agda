@@ -234,18 +234,18 @@ module _ where
 
   [A∪B]∪C≈A∪[B∪C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁}{C : Pred X ℓ₂} →
                     (A ∪ B) ∪ C ≈ A ∪ (B ∪ C)
-  [A∪B]∪C≈A∪[B∪C] = record { eql = [A∪B]∪C⊆A∪[B∪C] , [A∪B]∪C⊇A∪[B∪C] }
+  [A∪B]∪C≈A∪[B∪C] {A = A} {B = B} {C = C} = record { eql = [A∪B]∪C⊆A∪[B∪C] A B C , [A∪B]∪C⊇A∪[B∪C] A B C }
     where
       [A∪B]∪C⊆A∪[B∪C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂} {X : Set ℓ}
-                          {A : Pred X ℓ₀} {B : Pred X ℓ₁} {C : Pred X ℓ₂} →
+                          (A : Pred X ℓ₀) (B : Pred X ℓ₁) (C : Pred X ℓ₂) →
                           (A ∪ B) ∪ C ⊆ A ∪ (B ∪ C)
-      [A∪B]∪C⊆A∪[B∪C] (inj₁ (inj₁ x)) = inj₁ x
-      [A∪B]∪C⊆A∪[B∪C] (inj₁ (inj₂ y)) = inj₂ (inj₁ y)
-      [A∪B]∪C⊆A∪[B∪C] (inj₂ z) = inj₂ (inj₂ z)
+      [A∪B]∪C⊆A∪[B∪C] _ _ _ (inj₁ (inj₁ x)) = inj₁ x
+      [A∪B]∪C⊆A∪[B∪C] _ _ _ (inj₁ (inj₂ y)) = inj₂ (inj₁ y)
+      [A∪B]∪C⊆A∪[B∪C] _ _ _ (inj₂ z) = inj₂ (inj₂ z)
 
       [A∪B]∪C⊇A∪[B∪C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂} {X : Set ℓ}
-                          {A : Pred X ℓ₀} {B : Pred X ℓ₁} {C : Pred X ℓ₂} →
+                          (A : Pred X ℓ₀) (B : Pred X ℓ₁) (C : Pred X ℓ₂) →
                           A ∪ (B ∪ C) ⊆ (A ∪ B) ∪ C
-      [A∪B]∪C⊇A∪[B∪C] (inj₁ x) = inj₁ (inj₁ x)
-      [A∪B]∪C⊇A∪[B∪C] (inj₂ (inj₁ y)) = inj₁ (inj₂ y)
-      [A∪B]∪C⊇A∪[B∪C] (inj₂ (inj₂ z)) = inj₂ z
+      [A∪B]∪C⊇A∪[B∪C] _ _ _ (inj₁ x) = inj₁ (inj₁ x)
+      [A∪B]∪C⊇A∪[B∪C] _ _ _ (inj₂ (inj₁ y)) = inj₁ (inj₂ y)
+      [A∪B]∪C⊇A∪[B∪C] _ _ _ (inj₂ (inj₂ z)) = inj₂ z
