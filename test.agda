@@ -213,25 +213,21 @@ module _ where
   A⊆C×B⊆C⇒A∪B⊆C (A⊆C , B⊆C) (inj₂ y) = B⊆C y
 
   A∪A≈A : ∀ {ℓ ℓ₀}{X : Set ℓ}{A : Pred X ℓ₀} → A ∪ A ≈ A
-  A∪A≈A {ℓ} {ℓ₀} {X} {A} = record { eql = A∪A⊆A , A∪A⊇A }
+  A∪A≈A {ℓ} {ℓ₀} {X} {A} = record { eql =  A∪A⊆A  , A∪A⊇A }
     where
-      A∪A⊆A : ∀ {ℓ ℓ₀} {X : Set ℓ} {B : Pred X ℓ₀} {x : X} →
-              B x ⊎ B x → B x
+      A∪A⊆A : ∀ {ℓ ℓ₀} {X : Set ℓ} {B : Pred X ℓ₀} → B ∪ B ⊆ B
       A∪A⊆A (inj₁ x) = x
       A∪A⊆A (inj₂ y) = y
-      A∪A⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} {B : Pred X ℓ₀} {x : X} →
-              B x → B x ⊎ B x
+      A∪A⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} {B : Pred X ℓ₀} → B ∪ B ⊇ B
       A∪A⊇A prf = inj₁ prf
 
   A∪B≈B∪A : ∀ {ℓ ℓ₀ ℓ₁}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁} → A ∪ B ≈ B ∪ A
   A∪B≈B∪A = record { eql = A∪B⊆B∪A , A∪B⊇B∪A }
     where
-      A∪B⊆B∪A : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} {A₁ : Pred X ℓ₀} {B₁ : Pred X ℓ₁} {x : X} →
-                A₁ x ⊎ B₁ x → B₁ x ⊎ A₁ x
+      A∪B⊆B∪A : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} {A : Pred X ℓ₀} {B : Pred X ℓ₁} → A ∪ B ⊆ B ∪ A
       A∪B⊆B∪A (inj₁ x) = inj₂ x
       A∪B⊆B∪A (inj₂ y) = inj₁ y
-      A∪B⊇B∪A : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} {A₁ : Pred X ℓ₀} {B₁ : Pred X ℓ₁} {x : X} →
-                B₁ x ⊎ A₁ x → A₁ x ⊎ B₁ x
+      A∪B⊇B∪A : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} {A : Pred X ℓ₀} {B : Pred X ℓ₁} → B ∪ A ⊇ A ∪ B
       A∪B⊇B∪A (inj₁ x) = inj₂ x
       A∪B⊇B∪A (inj₂ y) = inj₁ y
 
@@ -240,15 +236,15 @@ module _ where
   [A∪B]∪C≈A∪[B∪C] = record { eql = [A∪B]∪C⊆A∪[B∪C] , [A∪B]∪C⊇A∪[B∪C] }
     where
       [A∪B]∪C⊆A∪[B∪C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂} {X : Set ℓ}
-                          {A₁ : Pred X ℓ₀} {B₁ : Pred X ℓ₁} {C₁ : Pred X ℓ₂} {x : X} →
-                          (A₁ x ⊎ B₁ x) ⊎ C₁ x → A₁ x ⊎ (B₁ x ⊎ C₁ x)
+                          {A : Pred X ℓ₀} {B : Pred X ℓ₁} {C : Pred X ℓ₂} →
+                          (A ∪ B) ∪ C ⊆ A ∪ (B ∪ C)
       [A∪B]∪C⊆A∪[B∪C] (inj₁ (inj₁ x)) = inj₁ x
       [A∪B]∪C⊆A∪[B∪C] (inj₁ (inj₂ y)) = inj₂ (inj₁ y)
       [A∪B]∪C⊆A∪[B∪C] (inj₂ z) = inj₂ (inj₂ z)
 
       [A∪B]∪C⊇A∪[B∪C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂} {X : Set ℓ}
-                          {A₁ : Pred X ℓ₀} {B₁ : Pred X ℓ₁} {C₁ : Pred X ℓ₂} {x : X} →
-                          A₁ x ⊎ (B₁ x ⊎ C₁ x) → (A₁ x ⊎ B₁ x) ⊎ C₁ x
+                          {A : Pred X ℓ₀} {B : Pred X ℓ₁} {C : Pred X ℓ₂} →
+                          A ∪ (B ∪ C) ⊆ (A ∪ B) ∪ C
       [A∪B]∪C⊇A∪[B∪C] (inj₁ x) = inj₁ (inj₁ x)
       [A∪B]∪C⊇A∪[B∪C] (inj₂ (inj₁ y)) = inj₁ (inj₂ y)
       [A∪B]∪C⊇A∪[B∪C] (inj₂ (inj₂ z)) = inj₂ z
