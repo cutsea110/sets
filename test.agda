@@ -213,7 +213,7 @@ module _ where
   A⊆C×B⊆C⇒A∪B⊆C (A⊆C , B⊆C) (inj₂ y) = B⊆C y
 
   A∪A≈A : ∀ {ℓ ℓ₀}{X : Set ℓ}{A : Pred X ℓ₀} → A ∪ A ≈ A
-  A∪A≈A {ℓ} {ℓ₀} {X} {A} = record { eql =  A∪A⊆A A  , A∪A⊇A A }
+  A∪A≈A {A = A} = record { eql =  A∪A⊆A A  , A∪A⊇A A }
     where
       A∪A⊆A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → A ∪ A ⊆ A
       A∪A⊆A _ (inj₁ x) = x
@@ -222,14 +222,15 @@ module _ where
       A∪A⊇A _ prf = inj₁ prf
 
   A∪B≈B∪A : ∀ {ℓ ℓ₀ ℓ₁}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁} → A ∪ B ≈ B ∪ A
-  A∪B≈B∪A = record { eql = A∪B⊆B∪A , A∪B⊇B∪A }
+  A∪B≈B∪A {A = A} {B = B} = record { eql = A∪B⊆B∪A A B , A∪B⊇B∪A B A }
     where
-      A∪B⊆B∪A : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} {A : Pred X ℓ₀} {B : Pred X ℓ₁} → A ∪ B ⊆ B ∪ A
-      A∪B⊆B∪A (inj₁ x) = inj₂ x
-      A∪B⊆B∪A (inj₂ y) = inj₁ y
-      A∪B⊇B∪A : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} {A : Pred X ℓ₀} {B : Pred X ℓ₁} → B ∪ A ⊇ A ∪ B
-      A∪B⊇B∪A (inj₁ x) = inj₂ x
-      A∪B⊇B∪A (inj₂ y) = inj₁ y
+      A∪B⊆B∪A : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} (A : Pred X ℓ₀) (B : Pred X ℓ₁) → A ∪ B ⊆ B ∪ A
+      A∪B⊆B∪A _ _ (inj₁ x) = inj₂ x
+      A∪B⊆B∪A _ _ (inj₂ y) = inj₁ y
+
+      A∪B⊇B∪A : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} (A : Pred X ℓ₀) (B : Pred X ℓ₁) → B ∪ A ⊇ A ∪ B
+      A∪B⊇B∪A _ _ (inj₁ x) = inj₂ x
+      A∪B⊇B∪A _ _ (inj₂ y) = inj₁ y
 
   [A∪B]∪C≈A∪[B∪C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁}{C : Pred X ℓ₂} →
                     (A ∪ B) ∪ C ≈ A ∪ (B ∪ C)
