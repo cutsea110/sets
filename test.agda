@@ -258,6 +258,7 @@ data _⇔_ {ℓ₀ ℓ₁} : (P : Set ℓ₀) → (Q : Set ℓ₁) → Set (ℓ�
 
 module _ where
   open import Data.Sum using (_⊎_; inj₁; inj₂)
+  open import Data.Empty using (⊥-elim)
 
   A⊆B⇔A∪B≈B : ∀ {ℓ ℓ₀}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₀} → A ⊆ B ⇔ A ∪ B ≈ B
   A⊆B⇔A∪B≈B {A = A} {B} = A⊆B→A∪B≈B A B , A∪B≈B→A⊆B A B
@@ -275,3 +276,16 @@ module _ where
           A∪B⊇B A B A⊆B = B⊆A∪B {A = A} {B}
       A∪B≈B→A⊆B : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : Pred X ℓ₀) → A ∪ B ≈ B → A ⊆ B
       A∪B≈B→A⊆B A B record { eql = (proj₁ , proj₂) } x = proj₁ (A⊆A∪B {A = A} {B} x)
+
+  A⊆B⇒A∪C⊆B∪C : ∀ {ℓ ℓ₀}{X : Set ℓ}{A B C : Pred X ℓ₀} → A ⊆ B → A ∪ C ⊆ B ∪ C
+  A⊆B⇒A∪C⊆B∪C prf = {!!}
+
+  ∅∪A≈A : ∀ {ℓ ℓ₀}{X : Set ℓ}{A : Pred X ℓ₀} → ∅ ∪ A ≈ A
+  ∅∪A≈A {A = A} = record { eql = ∅∪A⊆A A , ∅∪A⊇A A }
+    where
+      ∅∪A⊆A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → ∅ ∪ A ⊆ A
+      ∅∪A⊆A A (inj₁ x) = ∅-⊆ A (⊥-elim x)
+      ∅∪A⊆A A (inj₂ y) = y
+
+      ∅∪A⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → A ⊆ ∅ ∪ A
+      ∅∪A⊇A _ = λ {x} → inj₂
