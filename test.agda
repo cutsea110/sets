@@ -201,8 +201,5 @@ module _ where
       helpᵣ prf | even k = inj₂ tt
       helpᵣ prf | odd k = inj₁ tt
 
-  A⊆A∪B : ∀ A B → A ⊆ A ∪ B
-  A⊆A∪B x∈A B x = inj₁ x
-
-  A⊆A∪B' : ∀ {ℓ₀ ℓ₁ X} {A : Pred X ℓ₀} {B : Pred X ℓ₁} → A ⊆ A ∪ B
-  A⊆A∪B' x∈A = inj₁ x∈A
+  A⊆A∪B : ∀ {ℓ₀ ℓ₁ ℓ}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁} → A ⊆ A ∪ B
+  A⊆A∪B = inj₁
