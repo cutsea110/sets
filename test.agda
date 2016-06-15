@@ -263,8 +263,7 @@ module _ where
   A⊆B⇔A∪B≈B : ∀ {ℓ ℓ₀}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₀} → A ⊆ B ⇔ A ∪ B ≈ B
   A⊆B⇔A∪B≈B {A = A} {B} = A⊆B→A∪B≈B A B , A∪B≈B→A⊆B A B
     where
-      A⊆B→A∪B≈B : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : X → Set ℓ₀) →
-                  A ⊆ B → A ∪ B ≈ B
+      A⊆B→A∪B≈B : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : X → Set ℓ₀) → A ⊆ B → A ∪ B ≈ B
       A⊆B→A∪B≈B A B A⊆B = record { eql = A∪B⊆B A B A⊆B , A∪B⊇B A B A⊆B }
         where
           A∪B⊆B : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : Pred X ℓ₀) → A ⊆ B → A ∪ B ⊆ B
