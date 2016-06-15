@@ -249,3 +249,19 @@ module _ where
       [A∪B]∪C⊇A∪[B∪C] _ _ _ (inj₁ x) = inj₁ (inj₁ x)
       [A∪B]∪C⊇A∪[B∪C] _ _ _ (inj₂ (inj₁ y)) = inj₁ (inj₂ y)
       [A∪B]∪C⊇A∪[B∪C] _ _ _ (inj₂ (inj₂ z)) = inj₂ z
+
+
+infix 2 _⇔_
+
+data _⇔_ {ℓ₀ ℓ₁} : (P : Set ℓ₀) → (Q : Set ℓ₁) → Set (ℓ₀ ⊔ ℓ₁) where
+    _,_ : {P : Set ℓ₀}{Q : Set ℓ₁} → (P → Q) → (Q → P) → P ⇔ Q
+
+module _ where
+  open import Data.Sum using (_⊎_; inj₁; inj₂)
+
+  A⊆B⇔A∪B≈B : ∀ {ℓ ℓ₀}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₀} → A ⊆ B ⇔ A ∪ B ≈ B
+  A⊆B⇔A∪B≈B {A = A} {B = B} = A⊆B→A∪B≈B A B , {!!}
+    where
+      A⊆B→A∪B≈B : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : X → Set ℓ₀) →
+            ({x : X} → A x → B x) → (λ x → A x ⊎ B x) ≈ B
+      A⊆B→A∪B≈B = {!!}
