@@ -278,7 +278,8 @@ module _ where
       A∪B≈B→A⊆B A B record { eql = (proj₁ , proj₂) } x = proj₁ (A⊆A∪B {A = A} {B} x)
 
   A⊆B⇒A∪C⊆B∪C : ∀ {ℓ ℓ₀}{X : Set ℓ}{A B C : Pred X ℓ₀} → A ⊆ B → A ∪ C ⊆ B ∪ C
-  A⊆B⇒A∪C⊆B∪C prf = {!!}
+  A⊆B⇒A∪C⊆B∪C {A = A} {B} {C} A⊆B (inj₁ x) = A⊆A∪B {A = B} {C} (A⊆B x)
+  A⊆B⇒A∪C⊆B∪C {A = A} {B} {C} A⊆B (inj₂ y) = B⊆A∪B {A = B} {C} y
 
   ∅∪A≈A : ∀ {ℓ ℓ₀}{X : Set ℓ}{A : Pred X ℓ₀} → ∅ ∪ A ≈ A
   ∅∪A≈A {A = A} = record { eql = ∅∪A⊆A A , ∅∪A⊇A A }
