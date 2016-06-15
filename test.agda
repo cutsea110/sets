@@ -213,13 +213,13 @@ module _ where
   A⊆C×B⊆C⇒A∪B⊆C (A⊆C , B⊆C) (inj₂ y) = B⊆C y
 
   A∪A≈A : ∀ {ℓ ℓ₀}{X : Set ℓ}{A : Pred X ℓ₀} → A ∪ A ≈ A
-  A∪A≈A {ℓ} {ℓ₀} {X} {A} = record { eql =  A∪A⊆A  , A∪A⊇A }
+  A∪A≈A {ℓ} {ℓ₀} {X} {A} = record { eql =  A∪A⊆A A  , A∪A⊇A A }
     where
-      A∪A⊆A : ∀ {ℓ ℓ₀} {X : Set ℓ} {B : Pred X ℓ₀} → B ∪ B ⊆ B
-      A∪A⊆A (inj₁ x) = x
-      A∪A⊆A (inj₂ y) = y
-      A∪A⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} {B : Pred X ℓ₀} → B ∪ B ⊇ B
-      A∪A⊇A prf = inj₁ prf
+      A∪A⊆A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → A ∪ A ⊆ A
+      A∪A⊆A _ (inj₁ x) = x
+      A∪A⊆A _ (inj₂ y) = y
+      A∪A⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → A ∪ A ⊇ A
+      A∪A⊇A _ prf = inj₁ prf
 
   A∪B≈B∪A : ∀ {ℓ ℓ₀ ℓ₁}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁} → A ∪ B ≈ B ∪ A
   A∪B≈B∪A = record { eql = A∪B⊆B∪A , A∪B⊇B∪A }
