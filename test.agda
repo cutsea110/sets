@@ -203,3 +203,6 @@ module _ where
 
   A⊆A∪B : ∀ {ℓ₀ ℓ₁ ℓ}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁} → A ⊆ A ∪ B
   A⊆A∪B = inj₁
+
+  B⊆A∪B : ∀ {ℓ₀ ℓ₁ ℓ}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁} → B ⊆ A ∪ B
+  B⊆A∪B = inj₂
