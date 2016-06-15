@@ -222,7 +222,7 @@ module _ where
       A∪A⊇A _ prf = inj₁ prf
 
   A∪B≈B∪A : ∀ {ℓ ℓ₀ ℓ₁}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁} → A ∪ B ≈ B ∪ A
-  A∪B≈B∪A {A = A} {B = B} = record { eql = A∪B⊆B∪A A B , A∪B⊇B∪A B A }
+  A∪B≈B∪A {A = A} {B} = record { eql = A∪B⊆B∪A A B , A∪B⊇B∪A B A }
     where
       A∪B⊆B∪A : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} (A : Pred X ℓ₀) (B : Pred X ℓ₁) → A ∪ B ⊆ B ∪ A
       A∪B⊆B∪A _ _ (inj₁ x) = inj₂ x
@@ -234,7 +234,7 @@ module _ where
 
   [A∪B]∪C≈A∪[B∪C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁}{C : Pred X ℓ₂} →
                     (A ∪ B) ∪ C ≈ A ∪ (B ∪ C)
-  [A∪B]∪C≈A∪[B∪C] {A = A} {B = B} {C = C} = record { eql = [A∪B]∪C⊆A∪[B∪C] A B C , [A∪B]∪C⊇A∪[B∪C] A B C }
+  [A∪B]∪C≈A∪[B∪C] {A = A} {B} {C} = record { eql = [A∪B]∪C⊆A∪[B∪C] A B C , [A∪B]∪C⊇A∪[B∪C] A B C }
     where
       [A∪B]∪C⊆A∪[B∪C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂} {X : Set ℓ}
                           (A : Pred X ℓ₀) (B : Pred X ℓ₁) (C : Pred X ℓ₂) →
@@ -260,16 +260,18 @@ module _ where
   open import Data.Sum using (_⊎_; inj₁; inj₂)
 
   A⊆B⇔A∪B≈B : ∀ {ℓ ℓ₀}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₀} → A ⊆ B ⇔ A ∪ B ≈ B
-  A⊆B⇔A∪B≈B {A = A} {B = B} = A⊆B→A∪B≈B A B , {!!}
+  A⊆B⇔A∪B≈B {A = A} {B} = A⊆B→A∪B≈B A B , A∪B≈B→A⊆B A B
     where
       A⊆B→A∪B≈B : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : X → Set ℓ₀) →
                   A ⊆ B → A ∪ B ≈ B
       A⊆B→A∪B≈B A B A⊆B = record { eql = A∪B⊆B A B A⊆B , A∪B⊇B A B A⊆B }
         where
           A∪B⊆B : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : Pred X ℓ₀) → A ⊆ B → A ∪ B ⊆ B
-          A∪B⊆B A B A⊆B = A⊆C×B⊆C⇒A∪B⊆C {A = A} {B = B} {C = B} (A⊆B , B⊆B B)
+          A∪B⊆B A B A⊆B = A⊆C×B⊆C⇒A∪B⊆C {A = A} {B} {B} (A⊆B , B⊆B B)
             where
               B⊆B : ∀ {ℓ ℓ₀} {X : Set ℓ} (B : Pred X ℓ₀) → B ⊆ B
               B⊆B B = id
           A∪B⊇B : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : Pred X ℓ₀) → A ⊆ B → A ∪ B ⊇ B
           A∪B⊇B A B A⊆B = B⊆A∪B {A = A} {B}
+      A∪B≈B→A⊆B : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : Pred X ℓ₀) → A ∪ B ≈ B → A ⊆ B
+      A∪B≈B→A⊆B A B record { eql = (proj₁ , proj₂) } x = proj₁ (A⊆A∪B {A = A} {B} x)
