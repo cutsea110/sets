@@ -291,22 +291,22 @@ module _ where
       ∅∪A⊇A _ = λ {x} → inj₂
 
 module _ where
-       open import Data.Nat.Divisibility using (_∣_)
-       open import Data.Product using (_×_; _,_; proj₁; proj₂)
-       open import Relation.Nullary using (¬_)
+  open import Data.Nat.Divisibility using (_∣_)
+  open import Data.Product using (_×_; _,_; proj₁; proj₂)
+  open import Relation.Nullary using (¬_)
 
-       even∩odd≈∅ : Evenℕ ∩ Oddℕ ≈ ∅
-       even∩odd≈∅ = record { eql = helpₗ , helpᵣ }
-         where
-           helpₗ : Evenℕ ∩ Oddℕ ⊆ ∅
-           helpₗ {x} (proj₁ , proj₂) with parity x
-           helpₗ (proj₁ , proj₂) | even k = proj₂
-           helpₗ (proj₁ , proj₂) | odd k = proj₁
-           helpᵣ : Evenℕ ∩ Oddℕ ⊇ ∅
-           helpᵣ ()
+  even∩odd≈∅ : Evenℕ ∩ Oddℕ ≈ ∅
+  even∩odd≈∅ = record { eql = helpₗ , helpᵣ }
+    where
+      helpₗ : Evenℕ ∩ Oddℕ ⊆ ∅
+      helpₗ {x} (proj₁ , proj₂) with parity x
+      helpₗ (proj₁ , proj₂) | even k = proj₂
+      helpₗ (proj₁ , proj₂) | odd k = proj₁
+      helpᵣ : Evenℕ ∩ Oddℕ ⊇ ∅
+      helpᵣ ()
 
-       A⊇A∩B : ∀ {ℓ₀ ℓ₁ ℓ}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁} → A ⊇ A ∩ B
-       A⊇A∩B = proj₁
+  A⊇A∩B : ∀ {ℓ₀ ℓ₁ ℓ}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁} → A ⊇ A ∩ B
+  A⊇A∩B = proj₁
 
-       B⊇A∩B : ∀ {ℓ₀ ℓ₁ ℓ}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁} → B ⊇ A ∩ B
-       B⊇A∩B = proj₂
+  B⊇A∩B : ∀ {ℓ₀ ℓ₁ ℓ}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁} → B ⊇ A ∩ B
+  B⊇A∩B = proj₂
