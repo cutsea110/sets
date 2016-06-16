@@ -289,3 +289,18 @@ module _ where
 
       ∅∪A⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → A ⊆ ∅ ∪ A
       ∅∪A⊇A _ = λ {x} → inj₂
+
+module _ where
+       open import Data.Nat.Divisibility using (_∣_)
+       open import Data.Product using (_×_; _,_)
+       open import Relation.Nullary using (¬_)
+
+       even∩odd≈∅ : Evenℕ ∩ Oddℕ ≈ ∅
+       even∩odd≈∅ = record { eql = helpₗ , helpᵣ }
+         where
+           helpₗ : Evenℕ ∩ Oddℕ ⊆ ∅
+           helpₗ {x} (proj₁ , proj₂) with parity x
+           helpₗ (proj₁ , proj₂) | even k = proj₂
+           helpₗ (proj₁ , proj₂) | odd k = proj₁
+           helpᵣ : Evenℕ ∩ Oddℕ ⊇ ∅
+           helpᵣ ()
