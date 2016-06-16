@@ -188,6 +188,13 @@ module _  where
           help₁ (suc (suc (suc (suc (suc ()))))) x
       A⊇B (proj₁ , s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))) , proj₃) | odd (suc (suc (suc (suc k))))
 
+  A⊇B×B⊇C⇒A⊇C : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂} {X : Set ℓ} {A : Pred X ℓ₀} {B : Pred X ℓ₁} {C : Pred X ℓ₂} →
+                  A ⊇ B × B ⊇ C → A ⊇ C
+  A⊇B×B⊇C⇒A⊇C (proj₁ , proj₂) x = proj₁ (proj₂ x)
+  A⊆B×B⊆C⇒A⊆C : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂} {X : Set ℓ} {A : Pred X ℓ₀} {B : Pred X ℓ₁} {C : Pred X ℓ₂} →
+                  A ⊆ B × B ⊆ C → A ⊆ C
+  A⊆B×B⊆C⇒A⊆C (proj₁ , proj₂) x = proj₂ (proj₁ x)
+
 module _ where
   open import Data.Sum using (_⊎_; inj₁; inj₂)
 
@@ -344,3 +351,19 @@ module _ where
                           (A : Pred X ℓ₀) (B : Pred X ℓ₁) (C : Pred X ℓ₂) →
                           A ∩ (B ∩ C) ⊆ (A ∩ B) ∩ C
       [A∩B]∩C⊇A∩[B∩C] A₁ B₁ C₁ (proj₁ , proj₂ , proj₃) = (proj₁ , proj₂) , proj₃
+
+  A⊆B⇔A∩B≈A : ∀ {ℓ ℓ₀}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₀} → A ⊆ B ⇔ A ∩ B ≈ A
+  A⊆B⇔A∩B≈A {A = A} {B} = A⊆B→A∩B≈A A B , A∩B≈A→A⊆B A B
+    where
+      A⊆B→A∩B≈A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : Pred X ℓ₀) → A ⊆ B → A ∩ B ≈ A
+      A⊆B→A∩B≈A A B A⊆B = record { eql = A∩B⊆A A B A⊆B , A∩B⊇A A B A⊆B }
+        where
+          A∩B⊆A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : Pred X ℓ₀) → A ⊆ B → A ∩ B ⊆ A
+          A∩B⊆A A B A⊆B (proj₁ , proj₂) = proj₁
+          A∩B⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : Pred X ℓ₀) → A ⊆ B → A ∩ B ⊇ A
+          A∩B⊇A A B A⊆B = A⊇C×B⊇C⇒A∩B⊇C {A = A} {B} {A} (A⊇A A , A⊆B)
+            where
+              A⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → A ⊇ A
+              A⊇A A = id
+      A∩B≈A→A⊆B : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : Pred X ℓ₀) → A ∩ B ≈ A → A ⊆ B
+      A∩B≈A→A⊆B A B record { eql = (A∩B⊆A , A⊆A∩B) } = A⊆B×B⊆C⇒A⊆C {A = A} (A⊆A∩B , B⊇A∩B {A = A} {B})
