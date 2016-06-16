@@ -310,3 +310,7 @@ module _ where
 
   B⊇A∩B : ∀ {ℓ₀ ℓ₁ ℓ}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁} → B ⊇ A ∩ B
   B⊇A∩B = proj₂
+
+  A⊇C×B⊇C⇒A∩B⊇C : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁}{C : Pred X ℓ₂} →
+                  A ⊇ C × B ⊇ C → A ∩ B ⊇ C
+  A⊇C×B⊇C⇒A∩B⊇C (A⊇C , B⊇C) x∈C = (A⊇C x∈C) , (B⊇C x∈C)
