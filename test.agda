@@ -322,3 +322,25 @@ module _ where
       A∩A⊆A _ (proj₁ , proj₂) = proj₁
       A∩A⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → A ∩ A ⊇ A
       A∩A⊇A _ prf = prf , prf
+
+  A∩B≈B∩A : ∀ {ℓ ℓ₀ ℓ₁}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁} → A ∩ B ≈ B ∩ A
+  A∩B≈B∩A {A = A} {B} = record { eql = A∩B⊆B∩A A B , A∩B⊇B∩A B A }
+    where
+      A∩B⊆B∩A : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} (A : Pred X ℓ₀) (B : Pred X ℓ₁) → A ∩ B ⊆ B ∩ A
+      A∩B⊆B∩A _ _ (proj₁ , proj₂) = proj₂ , proj₁
+      A∩B⊇B∩A : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} (A : Pred X ℓ₀) (B : Pred X ℓ₁) → B ∩ A ⊇ A ∩ B
+      A∩B⊇B∩A A₁ B₁ (proj₁ , proj₂) = proj₂ , proj₁
+
+  [A∩B]∩C≈A∩[B∩C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁}{C : Pred X ℓ₂} →
+                    (A ∩ B) ∩ C ≈ A ∩ (B ∩ C)
+  [A∩B]∩C≈A∩[B∩C]{A = A} {B} {C} = record { eql = [A∩B]∩C⊆A∩[B∩C] A B C , [A∩B]∩C⊇A∩[B∩C] A B C }
+    where
+      [A∩B]∩C⊆A∩[B∩C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂} {X : Set ℓ}
+                          (A : Pred X ℓ₀) (B : Pred X ℓ₁) (C : Pred X ℓ₂) →
+                          (A ∩ B) ∩ C ⊆ A ∩ (B ∩ C)
+      [A∩B]∩C⊆A∩[B∩C] A₁ B₁ C₁ ((proj₁ , proj₂) , proj₃) = proj₁ , (proj₂ , proj₃)
+
+      [A∩B]∩C⊇A∩[B∩C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂} {X : Set ℓ}
+                          (A : Pred X ℓ₀) (B : Pred X ℓ₁) (C : Pred X ℓ₂) →
+                          A ∩ (B ∩ C) ⊆ (A ∩ B) ∩ C
+      [A∩B]∩C⊇A∩[B∩C] A₁ B₁ C₁ (proj₁ , proj₂ , proj₃) = (proj₁ , proj₂) , proj₃
