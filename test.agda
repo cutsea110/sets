@@ -314,3 +314,11 @@ module _ where
   A⊇C×B⊇C⇒A∩B⊇C : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁}{C : Pred X ℓ₂} →
                   A ⊇ C × B ⊇ C → A ∩ B ⊇ C
   A⊇C×B⊇C⇒A∩B⊇C (A⊇C , B⊇C) x∈C = (A⊇C x∈C) , (B⊇C x∈C)
+
+  A∩A≈A : ∀ {ℓ ℓ₀}{X : Set ℓ}{A : Pred X ℓ₀} → A ∩ A ≈ A
+  A∩A≈A {A = A} = record { eql = A∩A⊆A A , A∩A⊇A A }
+    where
+      A∩A⊆A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → A ∩ A ⊆ A
+      A∩A⊆A _ (proj₁ , proj₂) = proj₁
+      A∩A⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → A ∩ A ⊇ A
+      A∩A⊇A _ prf = prf , prf
