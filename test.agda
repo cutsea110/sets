@@ -436,3 +436,12 @@ module _ where
 
       A⟨⊝⟩A⊇∅ : ∀ {ℓ} {X : Set ℓ} (A : X → Set) → A ⟨⊝⟩ A ⊇ ∅
       A⟨⊝⟩A⊇∅ A ()
+
+  A⊆B⇒A⟨⊝⟩B≈ø : ∀ {ℓ} {X : Set ℓ} {A B : Pred X lzero} → A ⊆ B → A ⟨⊝⟩ B ≈ ∅
+  A⊆B⇒A⟨⊝⟩B≈ø {A = A} {B} A⊆B = record { eql = A⟨⊝⟩B⊆∅ {A = A} {B} A⊆B , A⟨⊝⟩B⊇∅ {A = A} {B} A⊆B }
+    where
+      A⟨⊝⟩B⊆∅ : ∀ {ℓ} {X : Set ℓ} {A B : Pred X lzero} → A ⊆ B → A ⟨⊝⟩ B ⊆ ∅
+      A⟨⊝⟩B⊆∅ A⊆B (x∈A , x∉B) = x∉B (A⊆B x∈A)
+
+      A⟨⊝⟩B⊇∅ : ∀ {ℓ} {X : Set ℓ} {A B : Pred X lzero} → A ⊆ B → A ⟨⊝⟩ B ⊇ ∅
+      A⟨⊝⟩B⊇∅ A⊆B ()
