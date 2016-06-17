@@ -412,3 +412,12 @@ module _ where
       [A∩B]∪C⊇[A∪C]∩[B∪C] A B C (inj₁ _   , inj₂ x∈C) = inj₂ x∈C
       [A∩B]∪C⊇[A∪C]∩[B∪C] A B C (inj₂ x∈C , inj₁ _  ) = inj₂ x∈C
       [A∩B]∪C⊇[A∪C]∩[B∪C] A B C (inj₂ _   , inj₂ x∈C) = inj₂ x∈C
+
+  [A∪B]∩A≈A : ∀ {ℓ ℓ₀}{X : Set ℓ}{A B : Pred X ℓ₀} → (A ∪ B) ∩ A ≈ A
+  [A∪B]∩A≈A {A = A} {B} = record { eql = [A∪B]∩A⊆A A B , [A∪B]∩A⊇A A B }
+    where
+      [A∪B]∩A⊆A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : Pred X ℓ₀) → (A ∪ B) ∩ A ⊆ A
+      [A∪B]∩A⊆A A B (A∪B , x∈A) = x∈A
+
+      [A∪B]∩A⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : Pred X ℓ₀) → (A ∪ B) ∩ A ⊇ A
+      [A∪B]∩A⊇A A B x∈A = inj₁ x∈A , x∈A
