@@ -190,10 +190,10 @@ module _  where
 
   A⊇B×B⊇C⇒A⊇C : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂} {X : Set ℓ} {A : Pred X ℓ₀} {B : Pred X ℓ₁} {C : Pred X ℓ₂} →
                   A ⊇ B × B ⊇ C → A ⊇ C
-  A⊇B×B⊇C⇒A⊇C (proj₁ , proj₂) x = proj₁ (proj₂ x)
+  A⊇B×B⊇C⇒A⊇C (B⊆A , C⊆B) x∈C = B⊆A (C⊆B x∈C)
   A⊆B×B⊆C⇒A⊆C : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂} {X : Set ℓ} {A : Pred X ℓ₀} {B : Pred X ℓ₁} {C : Pred X ℓ₂} →
                   A ⊆ B × B ⊆ C → A ⊆ C
-  A⊆B×B⊆C⇒A⊆C (proj₁ , proj₂) x = proj₂ (proj₁ x)
+  A⊆B×B⊆C⇒A⊆C (A⊆B , B⊆C) x∈A = B⊆C (A⊆B x∈A)
 
 module _ where
   open import Data.Sum using (_⊎_; inj₁; inj₂)
