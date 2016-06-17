@@ -301,6 +301,7 @@ module _ where
   open import Data.Nat.Divisibility using (_∣_)
   open import Data.Product using (_×_; _,_; proj₁; proj₂)
   open import Relation.Nullary using (¬_)
+  open import Data.Sum using (_⊎_; inj₁; inj₂)
 
   even∩odd≈∅ : Evenℕ ∩ Oddℕ ≈ ∅
   even∩odd≈∅ = record { eql = helpₗ , helpᵣ }
@@ -378,3 +379,23 @@ module _ where
       ∅∩A⊆∅ A x∈∅∩A = proj₁ x∈∅∩A
       ∅∩A⊇∅ : ∀ {ℓ} {X : Set ℓ} (A : Pred X lzero) → ∅ ∩ A ⊇ ∅
       ∅∩A⊇∅ A x∈∅ = x∈∅ , ∅-⊆ A x∈∅
+
+  [A∪B]∩C≈[A∩C]∪[B∩C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁}{C : Pred X ℓ₂} →
+                          (A ∪ B) ∩ C ≈ (A ∩ C) ∪ (B ∩ C)
+  [A∪B]∩C≈[A∩C]∪[B∩C] {A = A} {B} {C} = record { eql = [A∪B]∩C⊆[A∩C]∪[B∩C] A B C , [A∪B]∩C⊇[A∩C]∪[B∩C] A B C }
+    where
+      [A∪B]∩C⊆[A∩C]∪[B∩C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂}{X : Set ℓ}
+                              (A : Pred X ℓ₀)(B : Pred X ℓ₁)(C : Pred X ℓ₂) →
+                              (A ∪ B) ∩ C ⊆ (A ∩ C) ∪ (B ∩ C)
+      [A∪B]∩C⊆[A∩C]∪[B∩C] A B C (inj₁ x∈A , x∈C) = inj₁ (x∈A , x∈C)
+      [A∪B]∩C⊆[A∩C]∪[B∩C] A B C (inj₂ x∈B , x∈C) = inj₂ (x∈B , x∈C)
+      [A∪B]∩C⊇[A∩C]∪[B∩C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂}{X : Set ℓ}
+                              (A : Pred X ℓ₀)(B : Pred X ℓ₁)(C : Pred X ℓ₂) →
+                              (A ∪ B) ∩ C ⊇ (A ∩ C) ∪ (B ∩ C)
+      [A∪B]∩C⊇[A∩C]∪[B∩C] A B C (inj₁ (x∈A , x∈C)) = inj₁ x∈A , x∈C
+      [A∪B]∩C⊇[A∩C]∪[B∩C] A B C (inj₂ (x∈B , x∈C)) = inj₂ x∈B , x∈C
+
+  [A∩B]∪C≈[A∪C]∩[B∪C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁}{C : Pred X ℓ₂} →
+                          (A ∩ B) ∪ C ≈ (A ∪ C) ∩ (B ∪ C)
+  [A∩B]∪C≈[A∪C]∩[B∪C] = {!!}
+
