@@ -426,3 +426,13 @@ module _ where
 _⟨⊝⟩_ : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} → (P : Pred X ℓ₀) → (Q : Pred X ℓ₁) → Pred X (ℓ₀ ⊔ ℓ₁)
 (P ⟨⊝⟩ Q) x = x ∈ P × x ∉ Q
 
+module _ where
+
+  A⟨⊝⟩A⇒∅ : ∀ {ℓ} {X : Set ℓ} (A : Pred X lzero) → A ⟨⊝⟩ A ≈ ∅
+  A⟨⊝⟩A⇒∅ A = record { eql = A⟨⊝⟩A⊆∅ A , A⟨⊝⟩A⊇∅ A }
+    where
+      A⟨⊝⟩A⊆∅ : ∀ {ℓ} {X : Set ℓ} (A : X → Set) → A ⟨⊝⟩ A ⊆ ∅
+      A⟨⊝⟩A⊆∅ A (x∈A , x∉A) = x∉A x∈A
+
+      A⟨⊝⟩A⊇∅ : ∀ {ℓ} {X : Set ℓ} (A : X → Set) → A ⟨⊝⟩ A ⊇ ∅
+      A⟨⊝⟩A⊇∅ A ()
