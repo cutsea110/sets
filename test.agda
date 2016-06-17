@@ -304,14 +304,14 @@ module _ where
   open import Data.Sum using (_⊎_; inj₁; inj₂)
 
   even∩odd≈∅ : Evenℕ ∩ Oddℕ ≈ ∅
-  even∩odd≈∅ = record { eql = helpₗ , helpᵣ }
+  even∩odd≈∅ = record { eql = even∩odd⊆∅ , even∩odd⊇∅ }
     where
-      helpₗ : Evenℕ ∩ Oddℕ ⊆ ∅
-      helpₗ {x} (proj₁ , proj₂) with parity x
-      helpₗ (proj₁ , proj₂) | even k = proj₂
-      helpₗ (proj₁ , proj₂) | odd k = proj₁
-      helpᵣ : Evenℕ ∩ Oddℕ ⊇ ∅
-      helpᵣ ()
+      even∩odd⊆∅ : Evenℕ ∩ Oddℕ ⊆ ∅
+      even∩odd⊆∅ {x} (e , o) with parity x
+      even∩odd⊆∅ (e , o) | even k = o
+      even∩odd⊆∅ (e , o) | odd k = e
+      even∩odd⊇∅ : Evenℕ ∩ Oddℕ ⊇ ∅
+      even∩odd⊇∅ ()
 
   A⊇A∩B : ∀ {ℓ₀ ℓ₁ ℓ}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁} → A ⊇ A ∩ B
   A⊇A∩B = proj₁
@@ -327,17 +327,17 @@ module _ where
   A∩A≈A {A = A} = record { eql = A∩A⊆A A , A∩A⊇A A }
     where
       A∩A⊆A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → A ∩ A ⊆ A
-      A∩A⊆A _ (proj₁ , proj₂) = proj₁
+      A∩A⊆A _ (_ , x∈A) = x∈A
       A∩A⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → A ∩ A ⊇ A
-      A∩A⊇A _ prf = prf , prf
+      A∩A⊇A _ x∈A = x∈A , x∈A
 
   A∩B≈B∩A : ∀ {ℓ ℓ₀ ℓ₁}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁} → A ∩ B ≈ B ∩ A
   A∩B≈B∩A {A = A} {B} = record { eql = A∩B⊆B∩A A B , A∩B⊇B∩A B A }
     where
       A∩B⊆B∩A : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} (A : Pred X ℓ₀) (B : Pred X ℓ₁) → A ∩ B ⊆ B ∩ A
-      A∩B⊆B∩A _ _ (proj₁ , proj₂) = proj₂ , proj₁
+      A∩B⊆B∩A _ _ (x∈A , x∈B) = x∈B , x∈A
       A∩B⊇B∩A : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} (A : Pred X ℓ₀) (B : Pred X ℓ₁) → B ∩ A ⊇ A ∩ B
-      A∩B⊇B∩A A₁ B₁ (proj₁ , proj₂) = proj₂ , proj₁
+      A∩B⊇B∩A A B (x∈A , x∈B) = x∈B , x∈A
 
   [A∩B]∩C≈A∩[B∩C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁}{C : Pred X ℓ₂} →
                     (A ∩ B) ∩ C ≈ A ∩ (B ∩ C)
@@ -346,12 +346,12 @@ module _ where
       [A∩B]∩C⊆A∩[B∩C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂} {X : Set ℓ}
                           (A : Pred X ℓ₀) (B : Pred X ℓ₁) (C : Pred X ℓ₂) →
                           (A ∩ B) ∩ C ⊆ A ∩ (B ∩ C)
-      [A∩B]∩C⊆A∩[B∩C] A₁ B₁ C₁ ((proj₁ , proj₂) , proj₃) = proj₁ , (proj₂ , proj₃)
+      [A∩B]∩C⊆A∩[B∩C] A B C ((x∈A , x∈B) , x∈C) = x∈A , x∈B , x∈C
 
       [A∩B]∩C⊇A∩[B∩C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂} {X : Set ℓ}
                           (A : Pred X ℓ₀) (B : Pred X ℓ₁) (C : Pred X ℓ₂) →
                           A ∩ (B ∩ C) ⊆ (A ∩ B) ∩ C
-      [A∩B]∩C⊇A∩[B∩C] A₁ B₁ C₁ (proj₁ , proj₂ , proj₃) = (proj₁ , proj₂) , proj₃
+      [A∩B]∩C⊇A∩[B∩C] A B C (x∈A , x∈B , x∈C) = (x∈A , x∈B) , x∈C
 
   A⊆B⇔A∩B≈A : ∀ {ℓ ℓ₀}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₀} → A ⊆ B ⇔ A ∩ B ≈ A
   A⊆B⇔A∩B≈A {A = A} {B} = A⊆B→A∩B≈A A B , A∩B≈A→A⊆B A B
@@ -360,7 +360,7 @@ module _ where
       A⊆B→A∩B≈A A B A⊆B = record { eql = A∩B⊆A A B A⊆B , A∩B⊇A A B A⊆B }
         where
           A∩B⊆A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : Pred X ℓ₀) → A ⊆ B → A ∩ B ⊆ A
-          A∩B⊆A A B A⊆B (proj₁ , proj₂) = proj₁
+          A∩B⊆A A B A⊆B (x∈A , x∈B) = x∈A
           A∩B⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : Pred X ℓ₀) → A ⊆ B → A ∩ B ⊇ A
           A∩B⊇A A B A⊆B = A⊇C×B⊇C⇒A∩B⊇C {A = A} {B} {A} (A⊇A A , A⊆B)
             where
@@ -370,7 +370,7 @@ module _ where
       A∩B≈A→A⊆B A B record { eql = (A∩B⊆A , A⊆A∩B) } = A⊆B×B⊆C⇒A⊆C {A = A} (A⊆A∩B , B⊇A∩B {A = A} {B})
 
   A⊆B⇒A∩C⊆B∩C : ∀ {ℓ ℓ₀}{X : Set ℓ}{A B C : Pred X ℓ₀} → A ⊆ B → A ∩ C ⊆ B ∩ C
-  A⊆B⇒A∩C⊆B∩C A⊆B (proj₁ , proj₂) = (A⊆B proj₁) , proj₂
+  A⊆B⇒A∩C⊆B∩C A⊆B (x∈A , x∈C) = A⊆B x∈A , x∈C
 
   ∅∩A≈∅ : ∀ {ℓ}{X : Set ℓ}{A : Pred X lzero} → ∅ ∩ A ≈ ∅
   ∅∩A≈∅ {A = A} = record { eql = ∅∩A⊆∅ A , ∅∩A⊇∅ A }
@@ -421,3 +421,8 @@ module _ where
 
       [A∪B]∩A⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : Pred X ℓ₀) → (A ∪ B) ∩ A ⊇ A
       [A∪B]∩A⊇A A B x∈A = inj₁ x∈A , x∈A
+
+
+_⟨⊝⟩_ : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} → (P : Pred X ℓ₀) → (Q : Pred X ℓ₁) → Pred X (ℓ₀ ⊔ ℓ₁)
+(P ⟨⊝⟩ Q) x = x ∈ P × x ∉ Q
+
