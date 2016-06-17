@@ -367,3 +367,14 @@ module _ where
               A⊇A A = id
       A∩B≈A→A⊆B : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : Pred X ℓ₀) → A ∩ B ≈ A → A ⊆ B
       A∩B≈A→A⊆B A B record { eql = (A∩B⊆A , A⊆A∩B) } = A⊆B×B⊆C⇒A⊆C {A = A} (A⊆A∩B , B⊇A∩B {A = A} {B})
+
+  A⊆B⇒A∩C⊆B∩C : ∀ {ℓ ℓ₀}{X : Set ℓ}{A B C : Pred X ℓ₀} → A ⊆ B → A ∩ C ⊆ B ∩ C
+  A⊆B⇒A∩C⊆B∩C A⊆B (proj₁ , proj₂) = (A⊆B proj₁) , proj₂
+
+  ∅∩A≈∅ : ∀ {ℓ}{X : Set ℓ}{A : Pred X lzero} → ∅ ∩ A ≈ ∅
+  ∅∩A≈∅ {A = A} = record { eql = ∅∩A⊆∅ A , ∅∩A⊇∅ A }
+    where
+      ∅∩A⊆∅ : ∀ {ℓ} {X : Set ℓ} (A : Pred X lzero) → ∅ ∩ A ⊆ ∅
+      ∅∩A⊆∅ A x∈∅∩A = proj₁ x∈∅∩A
+      ∅∩A⊇∅ : ∀ {ℓ} {X : Set ℓ} (A : Pred X lzero) → ∅ ∩ A ⊇ ∅
+      ∅∩A⊇∅ A x∈∅ = x∈∅ , ∅-⊆ A x∈∅
