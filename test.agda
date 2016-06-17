@@ -281,21 +281,21 @@ module _ where
           A∪B⊇B : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : Pred X ℓ₀) → A ⊆ B → A ∪ B ⊇ B
           A∪B⊇B A B A⊆B = B⊆A∪B {A = A} {B}
       A∪B≈B→A⊆B : ∀ {ℓ ℓ₀} {X : Set ℓ} (A B : Pred X ℓ₀) → A ∪ B ≈ B → A ⊆ B
-      A∪B≈B→A⊆B A B record { eql = (proj₁ , proj₂) } x = proj₁ (A⊆A∪B {A = A} {B} x)
+      A∪B≈B→A⊆B A B record { eql = (A∪B⊆B , B⊆A∪B) } x∈A = A∪B⊆B (inj₁ x∈A)
 
   A⊆B⇒A∪C⊆B∪C : ∀ {ℓ ℓ₀}{X : Set ℓ}{A B C : Pred X ℓ₀} → A ⊆ B → A ∪ C ⊆ B ∪ C
-  A⊆B⇒A∪C⊆B∪C {A = A} {B} {C} A⊆B (inj₁ x) = A⊆A∪B {A = B} {C} (A⊆B x)
-  A⊆B⇒A∪C⊆B∪C {A = A} {B} {C} A⊆B (inj₂ y) = B⊆A∪B {A = B} {C} y
+  A⊆B⇒A∪C⊆B∪C {A = A} {B} {C} A⊆B (inj₁ x∈A) = A⊆A∪B {A = B} {C} (A⊆B x∈A)
+  A⊆B⇒A∪C⊆B∪C {A = A} {B} {C} A⊆B (inj₂ x∈C) = B⊆A∪B {A = B} {C} x∈C
 
   ∅∪A≈A : ∀ {ℓ ℓ₀}{X : Set ℓ}{A : Pred X ℓ₀} → ∅ ∪ A ≈ A
   ∅∪A≈A {A = A} = record { eql = ∅∪A⊆A A , ∅∪A⊇A A }
     where
       ∅∪A⊆A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → ∅ ∪ A ⊆ A
-      ∅∪A⊆A A (inj₁ x) = ∅-⊆ A (⊥-elim x)
-      ∅∪A⊆A A (inj₂ y) = y
+      ∅∪A⊆A A (inj₁ x∈∅) = ∅-⊆ A (⊥-elim x∈∅)
+      ∅∪A⊆A A (inj₂ x∈A) = x∈A
 
       ∅∪A⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → A ⊆ ∅ ∪ A
-      ∅∪A⊇A _ = λ {x} → inj₂
+      ∅∪A⊇A _ x∈A = inj₂ x∈A
 
 module _ where
   open import Data.Nat.Divisibility using (_∣_)
