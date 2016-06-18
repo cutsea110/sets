@@ -5,7 +5,7 @@ open import Data.Unit using (⊤; tt)
 open import Data.String
 open import Data.Empty using (⊥)
 open import Function using (_∘_; id; flip; const)
-open import Relation.Unary
+open import Relation.Unary hiding (Decidable)
 open import Data.Product using (_×_; _,_; proj₁)
 open import Relation.Nullary using (¬_)
 
@@ -445,3 +445,29 @@ module _ where
 
       A⟨⊝⟩B⊇∅ : ∀ {ℓ} {X : Set ℓ} {A B : Pred X lzero} → A ⊆ B → A ⟨⊝⟩ B ⊇ ∅
       A⟨⊝⟩B⊇∅ A⊆B ()
+
+_ᶜ : ∀ {ℓ ℓ₀} {X : Set ℓ} → Pred X ℓ₀ → Pred X ℓ₀
+A ᶜ = λ x → x ∉ A
+
+module _ where
+  open import Data.Sum using (_⊎_)
+  open import Relation.Binary.Core
+  open import Relation.Nullary using (yes; no)
+  open import Data.Empty using (⊥-elim)
+  open import Data.Sum using (inj₁; inj₂)
+
+  _∈?_ : ∀ {ℓ ℓ₀} {X : Set ℓ} → Decidable {A = X} {B = Pred X ℓ₀} _∈_
+  x ∈? P with P x
+  ... | p = {!!}
+
+  A∪Aᶜ≈U : ∀ {ℓ} {X : Set ℓ} {A : Pred X lzero} → A ∪ A ᶜ ≈ U
+  A∪Aᶜ≈U {A = A} = record { eql = A∪Aᶜ⊆U A , A∪Aᶜ⊇U A }
+    where
+      A∪Aᶜ⊆U : ∀ {ℓ} {X : Set ℓ} (A : Pred X lzero) → A ∪ A ᶜ ⊆ U
+      A∪Aᶜ⊆U A x∈A∪Aᶜ = tt
+
+      A∪Aᶜ⊇U : ∀ {ℓ} {X : Set ℓ} (A : Pred X lzero) → A ∪ A ᶜ ⊇ U
+      A∪Aᶜ⊇U A {x} tt with x ∈? A
+      A∪Aᶜ⊇U A₁ tt | yes p = inj₁ p
+      A∪Aᶜ⊇U A₁ tt | no ¬p = inj₂ ¬p
+
