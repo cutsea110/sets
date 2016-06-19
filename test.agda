@@ -456,10 +456,6 @@ module _ where
   open import Data.Empty using (⊥-elim)
   open import Data.Sum using (inj₁; inj₂)
 
-  _∈?_ : ∀ {ℓ ℓ₀} {X : Set ℓ} → Decidable {A = X} {B = Pred X ℓ₀} _∈_
-  x ∈? P with P x
-  ... | p = {!!}
-
   A∪Aᶜ≈U : ∀ {ℓ} {X : Set ℓ} {A : Pred X lzero} → A ∪ A ᶜ ≈ U
   A∪Aᶜ≈U {A = A} = record { eql = A∪Aᶜ⊆U A , A∪Aᶜ⊇U A }
     where
@@ -467,7 +463,7 @@ module _ where
       A∪Aᶜ⊆U A x∈A∪Aᶜ = tt
 
       A∪Aᶜ⊇U : ∀ {ℓ} {X : Set ℓ} (A : Pred X lzero) → A ∪ A ᶜ ⊇ U
-      A∪Aᶜ⊇U A {x} tt with x ∈? A
-      A∪Aᶜ⊇U A₁ tt | yes p = inj₁ p
-      A∪Aᶜ⊇U A₁ tt | no ¬p = inj₂ ¬p
-
+      A∪Aᶜ⊇U A {x} tt = excluded-middle
+        where
+          postulate
+            excluded-middle : ∀ {a} {P : Set a} → P ⊎ ¬ P
