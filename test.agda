@@ -496,6 +496,9 @@ module _ where
   3Or5ℕ : Pred ℕ lzero
   3Or5ℕ = 3Or5
 
+  ∅∈𝒫3Or5ℕ : ∅ ∈ 𝒫 3Or5ℕ
+  ∅∈𝒫3Or5ℕ ()
+
   ｛3｝∈𝒫3Or5ℕ : ｛ 3 ｝ ∈ 𝒫 3Or5ℕ
   ｛3｝∈𝒫3Or5ℕ refl = tt
 
