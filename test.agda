@@ -470,3 +470,8 @@ module _ where
         where
           postulate
             excluded-middle : ∀ {a} {P : Set a} → P ⊎ ¬ P
+
+𝒫 : ∀ {ℓ ℓ₀} {X : Set ℓ} → (A : Pred X ℓ₀) → Pred (Pred X ℓ₀) (ℓ₀ ⊔ ℓ)
+𝒫 A = λ x → x ⊆ A
+
+
