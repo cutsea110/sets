@@ -198,6 +198,9 @@ module _  where
 module _ where
   open import Data.Sum using (_⊎_; inj₁; inj₂)
 
+  ∅⊆A : ∀ {ℓ} {X : Set ℓ} {A : Pred X lzero} → ∅ ⊆ A
+  ∅⊆A ()
+
   even∪odd≡nat : Oddℕ ∪ Evenℕ ≈ Nat
   even∪odd≡nat = record { eql = helpₗ , helpᵣ }
     where
