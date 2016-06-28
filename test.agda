@@ -2,7 +2,7 @@ open import Agda.Primitive using (lzero; lsuc; _⊔_)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Data.Nat hiding (_⊔_)
 open import Data.Unit using (⊤; tt)
-open import Data.String
+open import Data.String hiding (_≟_)
 open import Data.Empty using (⊥)
 open import Function using (_∘_; id; flip; const)
 open import Relation.Unary hiding (Decidable)
@@ -476,6 +476,10 @@ module _ where
 
 
 module _ where
+  open import Relation.Nullary using (yes; no)
+  open import Data.Sum using (inj₁; inj₂)
+  open import Data.Empty using (⊥-elim)
+  open import Relation.Binary.PropositionalEquality using (sym)
 
   ∅⊆Oddℕ : ∅ ⊆ 𝒫 Oddℕ
   ∅⊆Oddℕ () y
@@ -500,3 +504,15 @@ module _ where
 
   ｛4｝∉𝒫3Or5ℕ : ｛ 4 ｝ ∉ 𝒫 3Or5ℕ
   ｛4｝∉𝒫3Or5ℕ ｛4｝∈𝒫3Or5ℕ = ｛4｝∈𝒫3Or5ℕ refl
+
+  ｛3，5｝∈𝒫3Or5ℕ : ｛ 3 ｝ ∪ ｛ 5 ｝ ∈ 𝒫 3Or5ℕ
+  ｛3，5｝∈𝒫3Or5ℕ {x} ｛3，5｝∈3Or5ℕ  with x ≟ 3
+  ｛3，5｝∈𝒫3Or5ℕ ｛3，5｝∈3Or5ℕ | yes refl = tt
+  ｛3，5｝∈𝒫3Or5ℕ {x} ｛3，5｝∈3Or5ℕ | no ¬p with x ≟ 5
+  ｛3，5｝∈𝒫3Or5ℕ ｛3，5｝∈3Or5ℕ | no ¬p | yes refl = tt
+  ｛3，5｝∈𝒫3Or5ℕ (inj₁ x₁) | no ¬p₁ | no ¬p = ⊥-elim (¬p₁ (sym x₁))
+  ｛3，5｝∈𝒫3Or5ℕ (inj₂ y) | no ¬p₁ | no ¬p = ⊥-elim (¬p (sym y))
+
+  ｛3，4，5｝∉𝒫3Or5ℕ : ｛ 3 ｝ ∪ ｛ 4 ｝ ∪ ｛ 5 ｝ ∉ 𝒫 3Or5ℕ
+  ｛3，4，5｝∉𝒫3Or5ℕ ｛3，4，5｝∉3Or5ℕ = ｛3，4，5｝∉3Or5ℕ (inj₂ (inj₁ refl))
+
