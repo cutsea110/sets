@@ -475,3 +475,28 @@ module _ where
 𝒫 A = λ x → x ⊆ A
 
 
+module _ where
+
+  ∅⊆Oddℕ : ∅ ⊆ 𝒫 Oddℕ
+  ∅⊆Oddℕ () y
+  ∅∈𝒫Oddℕ :  ∅  ∈ 𝒫 Oddℕ
+  ∅∈𝒫Oddℕ ()
+  ｛3｝∈𝒫Oddℕ : ｛ 3 ｝ ∈ 𝒫 Oddℕ
+  ｛3｝∈𝒫Oddℕ refl = tt
+
+  3Or5 : ℕ → Set
+  3Or5 3 = ⊤
+  3Or5 5 = ⊤
+  3Or5 n = ⊥
+
+  3Or5ℕ : Pred ℕ lzero
+  3Or5ℕ = 3Or5
+
+  ｛3｝∈𝒫3Or5ℕ : ｛ 3 ｝ ∈ 𝒫 3Or5ℕ
+  ｛3｝∈𝒫3Or5ℕ refl = tt
+
+  ｛5｝∈𝒫3Or5ℕ : ｛ 5 ｝ ∈ 𝒫 3Or5ℕ
+  ｛5｝∈𝒫3Or5ℕ refl = tt
+
+  ｛4｝∉𝒫3Or5ℕ : ｛ 4 ｝ ∉ 𝒫 3Or5ℕ
+  ｛4｝∉𝒫3Or5ℕ ｛4｝∈𝒫3Or5ℕ = ｛4｝∈𝒫3Or5ℕ refl
