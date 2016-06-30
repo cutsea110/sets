@@ -457,7 +457,7 @@ module _ where
   open import Relation.Binary.Core
   open import Relation.Nullary using (yes; no)
   open import Data.Empty using (⊥-elim)
-  open import Data.Sum using (inj₁; inj₂)
+  open import Data.Sum using (inj₁; inj₂) renaming ([_,_]′ to ⊎-elim[_,_])
 
   A∪Aᶜ≈U : ∀ {ℓ} {X : Set ℓ} {A : Pred X lzero} → A ∪ A ᶜ ≈ U
   A∪Aᶜ≈U {A = A} = record { eql = A∪Aᶜ⊆U A , A∪Aᶜ⊇U A }
@@ -479,11 +479,23 @@ module _ where
       A∩Aᶜ⊇∅ : ∀ {ℓ} {X : Set ℓ} (A : Pred X lzero) → A ∩ A ᶜ ⊇ ∅
       A∩Aᶜ⊇∅ A₁ ()
 
+  open import Relation.Binary.Core using (Decidable)
+
   Aᶜᶜ≈A :  ∀ {ℓ} {X : Set ℓ} {A : Pred X lzero} → A ᶜ ᶜ ≈ A
   Aᶜᶜ≈A {A = A} = record { eql = Aᶜᶜ⊆A A , Aᶜᶜ⊇A A }
     where
       Aᶜᶜ⊆A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → A ᶜ ᶜ ⊆ A
-      Aᶜᶜ⊆A A x∈Aᶜᶜ = {!!}
+      Aᶜᶜ⊆A A {x} x∈Aᶜᶜ with x ∈? (A ᶜ)
+        where
+          postulate
+            _∈?_ : ∀ {ℓ ℓ₀} {X : Set ℓ} → Decidable {A = X} {B = Pred X ℓ₀} _∈_
+      Aᶜᶜ⊆A A {x} x∈Aᶜᶜ | yes p = ⊥-elim (x∈Aᶜᶜ p)
+      Aᶜᶜ⊆A A {x} x∈Aᶜᶜ | no ¬p = double-negation-elimination (x ∈ A) ¬p
+        where
+          postulate
+            excluded-middle : ∀ {a} (P : Set a) → P ⊎ ¬ P
+          double-negation-elimination : ∀ {a} (P : Set a) → ¬ ¬ P → P
+          double-negation-elimination P = λ x → ⊎-elim[ (λ y → y) , (λ z → ⊥-elim (x z)) ] (excluded-middle P)
 
       Aᶜᶜ⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → A ᶜ ᶜ ⊇ A
       Aᶜᶜ⊇A A x∈A x∈Aᶜ = x∈Aᶜ x∈A
