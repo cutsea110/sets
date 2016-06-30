@@ -470,6 +470,23 @@ module _ where
         where
           postulate
             excluded-middle : ∀ {a} {P : Set a} → P ⊎ ¬ P
+  A∩Aᶜ≈∅ : ∀ {ℓ} {X : Set ℓ} {A : Pred X lzero} → A ∩ A ᶜ ≈ ∅
+  A∩Aᶜ≈∅ {A = A} = record { eql = A∩Aᶜ⊆∅ A , A∩Aᶜ⊇∅ A }
+    where
+      A∩Aᶜ⊆∅ : ∀ {ℓ} {X : Set ℓ} (A : Pred X lzero) → A ∩ A ᶜ ⊆ ∅
+      A∩Aᶜ⊆∅ A (x∈A , x∉A) = x∉A x∈A
+
+      A∩Aᶜ⊇∅ : ∀ {ℓ} {X : Set ℓ} (A : Pred X lzero) → A ∩ A ᶜ ⊇ ∅
+      A∩Aᶜ⊇∅ A₁ ()
+
+  Aᶜᶜ≈A :  ∀ {ℓ} {X : Set ℓ} {A : Pred X lzero} → A ᶜ ᶜ ≈ A
+  Aᶜᶜ≈A {A = A} = record { eql = Aᶜᶜ⊆A A , Aᶜᶜ⊇A A }
+    where
+      Aᶜᶜ⊆A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → A ᶜ ᶜ ⊆ A
+      Aᶜᶜ⊆A A x∈Aᶜᶜ = {!!}
+
+      Aᶜᶜ⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → A ᶜ ᶜ ⊇ A
+      Aᶜᶜ⊇A A x∈A x∈Aᶜ = x∈Aᶜ x∈A
 
 𝒫 : ∀ {ℓ ℓ₀} {X : Set ℓ} → (A : Pred X ℓ₀) → Pred (Pred X ℓ₀) (ℓ₀ ⊔ ℓ)
 𝒫 A = λ x → x ⊆ A
