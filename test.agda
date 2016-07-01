@@ -509,7 +509,7 @@ module _ where
 
 
   A⊆B⇒Aᶜ⊇Bᶜ : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} {A : Pred X ℓ₀} {B : Pred X ℓ₁} → A ⊆ B → A ᶜ ⊇ B ᶜ
-  A⊆B⇒Aᶜ⊇Bᶜ = {!!}
+  A⊆B⇒Aᶜ⊇Bᶜ A⊆B x∈Bᶜ x∈A = ⊥-elim (x∈Bᶜ (A⊆B x∈A))
 
   [A∪B]ᶜ≈Aᶜ∩Bᶜ : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} {A : Pred X ℓ₀} {B : Pred X ℓ₁} → (A ∪ B) ᶜ ≈ A ᶜ ∩ B ᶜ
   [A∪B]ᶜ≈Aᶜ∩Bᶜ = {!!}
