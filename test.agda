@@ -512,7 +512,14 @@ module _ where
   A⊆B⇒Aᶜ⊇Bᶜ A⊆B x∈Bᶜ x∈A = ⊥-elim (x∈Bᶜ (A⊆B x∈A))
 
   [A∪B]ᶜ≈Aᶜ∩Bᶜ : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} {A : Pred X ℓ₀} {B : Pred X ℓ₁} → (A ∪ B) ᶜ ≈ A ᶜ ∩ B ᶜ
-  [A∪B]ᶜ≈Aᶜ∩Bᶜ = {!!}
+  [A∪B]ᶜ≈Aᶜ∩Bᶜ {ℓ} {X = X} {A} {B} = record { eql = [A∪B]ᶜ⊆Aᶜ∩Bᶜ A B , [A∪B]ᶜ⊇Aᶜ∩Bᶜ A B }
+    where
+      [A∪B]ᶜ⊆Aᶜ∩Bᶜ : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} →
+                     (A : Pred X ℓ₀) (B : Pred X ℓ₁) → (A ∪ B) ᶜ ⊆ (A ᶜ ∩ B ᶜ)
+      [A∪B]ᶜ⊆Aᶜ∩Bᶜ A B x∈[A∪B]ᶜ = (λ x∈A → x∈[A∪B]ᶜ (inj₁ x∈A)) , (λ x∈B → x∈[A∪B]ᶜ (inj₂ x∈B))
+      [A∪B]ᶜ⊇Aᶜ∩Bᶜ : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} →
+                     (A : Pred X ℓ₀) (B : Pred X ℓ₁) → (A ∪ B) ᶜ ⊇ (A ᶜ ∩ B ᶜ)
+      [A∪B]ᶜ⊇Aᶜ∩Bᶜ A B x∈Aᶜ∩Bᶜ x∈A∪B = {!!}
 
   [A∩B]ᶜ≈Aᶜ∪Bᶜ : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} {A : Pred X ℓ₀} {B : Pred X ℓ₁} → (A ∩ B) ᶜ ≈ A ᶜ ∪ B ᶜ
   [A∩B]ᶜ≈Aᶜ∪Bᶜ = {!!}
