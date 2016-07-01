@@ -527,7 +527,13 @@ module _ where
     where
       [A∩B]ᶜ⊆Aᶜ∪Bᶜ : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} →
                        (A : Pred X ℓ₀) (B : Pred X ℓ₁) → (A ∩ B) ᶜ ⊆ (A ᶜ ∪ B ᶜ)
-      [A∩B]ᶜ⊆Aᶜ∪Bᶜ A B {x} x∈[A∩B]ᶜ = {!!}
+      [A∩B]ᶜ⊆Aᶜ∪Bᶜ A B {x} x∈[A∩B]ᶜ with x ∈? A | x ∈? B
+        where
+          postulate
+            _∈?_ : ∀ {ℓ ℓ₀} {X : Set ℓ} → Decidable {A = X} {B = Pred X ℓ₀} _∈_
+      [A∩B]ᶜ⊆Aᶜ∪Bᶜ A₁ B₁ x∈[A∩B]ᶜ | yes x∈A | yes x∈B = ⊥-elim (x∈[A∩B]ᶜ (x∈A , x∈B))
+      [A∩B]ᶜ⊆Aᶜ∪Bᶜ A₁ B₁ x∈[A∩B]ᶜ | yes x∈A | no  x∉B = inj₂ x∉B
+      [A∩B]ᶜ⊆Aᶜ∪Bᶜ A B x∈[A∩B]ᶜ | no x∉A | q = inj₁ x∉A
       [A∩B]ᶜ⊇Aᶜ∪Bᶜ : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} →
                        (A : Pred X ℓ₀) (B : Pred X ℓ₁) → (A ∩ B) ᶜ ⊇ (A ᶜ ∪ B ᶜ)
       [A∩B]ᶜ⊇Aᶜ∪Bᶜ A B (inj₁ x∉A) (x∈A , x∈B) = x∉A x∈A
