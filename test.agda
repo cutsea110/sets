@@ -519,7 +519,8 @@ module _ where
       [A∪B]ᶜ⊆Aᶜ∩Bᶜ A B x∈[A∪B]ᶜ = (λ x∈A → x∈[A∪B]ᶜ (inj₁ x∈A)) , (λ x∈B → x∈[A∪B]ᶜ (inj₂ x∈B))
       [A∪B]ᶜ⊇Aᶜ∩Bᶜ : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} →
                      (A : Pred X ℓ₀) (B : Pred X ℓ₁) → (A ∪ B) ᶜ ⊇ (A ᶜ ∩ B ᶜ)
-      [A∪B]ᶜ⊇Aᶜ∩Bᶜ A B x∈Aᶜ∩Bᶜ x∈A∪B = {!!}
+      [A∪B]ᶜ⊇Aᶜ∩Bᶜ A B (x∉A , x∉B) (inj₁ x∈A) = x∉A x∈A
+      [A∪B]ᶜ⊇Aᶜ∩Bᶜ A B (x∉A , x∉B) (inj₂ x∈B) = x∉B x∈B
 
   [A∩B]ᶜ≈Aᶜ∪Bᶜ : ∀ {ℓ ℓ₀ ℓ₁} {X : Set ℓ} {A : Pred X ℓ₀} {B : Pred X ℓ₁} → (A ∩ B) ᶜ ≈ A ᶜ ∪ B ᶜ
   [A∩B]ᶜ≈Aᶜ∪Bᶜ = {!!}
