@@ -496,7 +496,8 @@ module _ where
           postulate
             excluded-middle : ∀ {a} (P : Set a) → P ⊎ ¬ P
           double-negation-elimination : ∀ {a} (P : Set a) → ¬ ¬ P → P
-          double-negation-elimination P = λ x → ⊎-elim[ (λ y → y) , (λ z → ⊥-elim (x z)) ] (excluded-middle P)
+          double-negation-elimination P =
+            λ x → ⊎-elim[ (λ y → y) , (λ z → ⊥-elim (x z)) ] (excluded-middle P)
 
       Aᶜᶜ⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → A ᶜ ᶜ ⊇ A
       Aᶜᶜ⊇A A x∈A x∈Aᶜ = x∈Aᶜ x∈A
@@ -590,3 +591,4 @@ module _ where
 
   ｛1，2｝∉𝒫3Or5ℕ : ｛ 1 ｝ ∪ ｛ 2 ｝ ∉ 𝒫 3Or5ℕ
   ｛1，2｝∉𝒫3Or5ℕ ｛1，2｝∉3Or5ℕ = ｛1，2｝∉3Or5ℕ (inj₁ refl)
+
