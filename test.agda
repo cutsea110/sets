@@ -130,9 +130,10 @@ module _  where
           3≢q*2 (suc zero) ()
           3≢q*2 (suc (suc q)) ()
           help₁ : ∀ i → suc (suc (toℕ i)) ∣ 3 → ⊥
-          help₁ = {!!}
+          help₁ zero (divides q eq) = ⊥-elim (3≢q*2 q eq)
+          help₁ (suc ()) x
       A⊇B prf | odd (suc (suc zero))
-        = (s≤s (s≤s (s≤s z≤n))) , ((s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))) , help₂)
+        = (s≤s (s≤s (s≤s z≤n))) , ((s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))) , help₁)
         where
           5≢q*2 : ∀ q → 5 ≡ q * 2 → ⊥
           5≢q*2 zero ()
@@ -147,10 +148,13 @@ module _  where
           5≢q*4 zero ()
           5≢q*4 (suc zero) ()
           5≢q*4 (suc (suc q)) ()
-          help₂ : ∀ i → suc (suc (toℕ i)) ∣ 5 → ⊥
-          help₂ = λ i x → {!!}
+          help₁ : ∀ i → suc (suc (toℕ i)) ∣ 5 → ⊥
+          help₁ zero (divides q eq) = ⊥-elim (5≢q*2 q eq)
+          help₁ (suc zero) (divides q eq) = ⊥-elim (5≢q*3 q eq)
+          help₁ (suc (suc zero)) (divides q eq) = ⊥-elim (5≢q*4 q eq)
+          help₁ (suc (suc (suc ()))) x
       A⊇B prf | odd (suc (suc (suc zero)))
-        = (s≤s (s≤s (s≤s z≤n))) , ((s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))))) , help₃)
+        = (s≤s (s≤s (s≤s z≤n))) , ((s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))))) , help₁)
         where
           7≢q*2 : ∀ q → 7 ≡ q * 2 → ⊥
           7≢q*2 zero ()
@@ -175,8 +179,13 @@ module _  where
           7≢q*6 zero ()
           7≢q*6 (suc zero) ()
           7≢q*6 (suc (suc q)) ()
-          help₃ : ∀ i → suc (suc (toℕ i)) ∣ 7 → ⊥
-          help₃ = {!!}
+          help₁ : ∀ i → suc (suc (toℕ i)) ∣ 7 → ⊥
+          help₁ zero (divides q eq) = ⊥-elim (7≢q*2 q eq)
+          help₁ (suc zero) (divides q eq) = ⊥-elim (7≢q*3 q eq)
+          help₁ (suc (suc zero)) (divides q eq) = ⊥-elim (7≢q*4 q eq)
+          help₁ (suc (suc (suc zero))) (divides q eq) = ⊥-elim (7≢q*5 q eq)
+          help₁ (suc (suc (suc (suc zero)))) (divides q eq) = ⊥-elim (7≢q*6 q eq)
+          help₁ (suc (suc (suc (suc (suc ()))))) x
       A⊇B (proj₁ , s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))) , proj₃) | odd (suc (suc (suc (suc k))))
 
   A⊇B×B⊇C⇒A⊇C : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂} {X : Set ℓ} {A : Pred X ℓ₀} {B : Pred X ℓ₁} {C : Pred X ℓ₂} →
