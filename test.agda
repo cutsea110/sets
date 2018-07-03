@@ -122,14 +122,15 @@ module _  where
       A⊇B {n} prf with parity n
       A⊇B (proj₁ , proj₂ , ()) | even k
       A⊇B (s≤s () , prf) | odd zero
-      A⊇B prf | odd (suc zero) = (s≤s (s≤s (s≤s z≤n))) , ((s≤s (s≤s (s≤s (s≤s z≤n)))) , help₁)
+      A⊇B prf | odd (suc zero) = (s≤s (s≤s (s≤s z≤n))) , ((s≤s (s≤s (s≤s (s≤s z≤n)))) ,  help₁ )
         where
           3≢q*2 : ∀ q → 3 ≡ q * 2 → ⊥
           3≢q*2 zero ()
           3≢q*2 (suc zero) ()
           3≢q*2 (suc (suc q)) ()
-          help₁ : ∀ i → suc (suc (toℕ i)) ∣ 3 → ⊥
-          help₁ = ?
+          help₁ : (i : Fin 1) → suc (suc (toℕ i)) ∣ 3 → ⊥
+          help₁ zero (divides q eq) = ⊥-elim (3≢q*2 q eq)
+          help₁ (suc ()) p
       A⊇B prf | odd (suc (suc zero))
         = (s≤s (s≤s (s≤s z≤n))) , ((s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))) , help₁)
         where
@@ -146,8 +147,8 @@ module _  where
           5≢q*4 zero ()
           5≢q*4 (suc zero) ()
           5≢q*4 (suc (suc q)) ()
-          help₁ : ∀ i → suc (suc (toℕ i)) ∣ 5 → ⊥
-          help₁ = ?
+          help₁ : (i : Fin 3) → suc (suc (toℕ i)) ∣ 5 → ⊥
+          help₁ = {!!}
       A⊇B prf | odd (suc (suc (suc zero)))
         = (s≤s (s≤s (s≤s z≤n))) , ((s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))))) , help₁)
         where
@@ -174,8 +175,8 @@ module _  where
           7≢q*6 zero ()
           7≢q*6 (suc zero) ()
           7≢q*6 (suc (suc q)) ()
-          help₁ : ∀ i → suc (suc (toℕ i)) ∣ 7 → ⊥
-          help₁ = ?
+          help₁ : (i : Fin 5) → suc (suc (toℕ i)) ∣ 7 → ⊥
+          help₁ = {!!}
       A⊇B (proj₁ , s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))) , proj₃) | odd (suc (suc (suc (suc k))))
 
   A⊇B×B⊇C⇒A⊇C : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂} {X : Set ℓ} {A : Pred X ℓ₀} {B : Pred X ℓ₁} {C : Pred X ℓ₂} →
