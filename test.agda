@@ -148,7 +148,10 @@ module _  where
           5≢q*4 (suc zero) ()
           5≢q*4 (suc (suc q)) ()
           help₁ : (i : Fin 3) → suc (suc (toℕ i)) ∣ 5 → ⊥
-          help₁ = {!!}
+          help₁ zero (divides q eq) = ⊥-elim (5≢q*2 q eq)
+          help₁ (suc zero) (divides q eq) = ⊥-elim (5≢q*3 q eq)
+          help₁ (suc (suc zero)) (divides q eq) = ⊥-elim (5≢q*4 q eq)
+          help₁ (suc (suc (suc ()))) p
       A⊇B prf | odd (suc (suc (suc zero)))
         = (s≤s (s≤s (s≤s z≤n))) , ((s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))))) , help₁)
         where
