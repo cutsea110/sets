@@ -86,7 +86,6 @@ record _≈_ {a ℓ} {S : Set a} (A : Pred S ℓ) (B : Pred S ℓ) : Set (a ⊔ 
     eql : A ⊆ B × A ⊇ B
 
 module _  where
-  open import Data.Fin hiding (_<_)
   open import Data.Nat.Primality using (Prime)
   open import Data.Empty using (⊥-elim)
   open import Data.Fin hiding (_<_; _≤_)
@@ -130,8 +129,7 @@ module _  where
           3≢q*2 (suc zero) ()
           3≢q*2 (suc (suc q)) ()
           help₁ : ∀ i → suc (suc (toℕ i)) ∣ 3 → ⊥
-          help₁ zero (divides q eq) = ⊥-elim (3≢q*2 q eq)
-          help₁ (suc ()) x
+          help₁ = ?
       A⊇B prf | odd (suc (suc zero))
         = (s≤s (s≤s (s≤s z≤n))) , ((s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))) , help₁)
         where
@@ -149,10 +147,7 @@ module _  where
           5≢q*4 (suc zero) ()
           5≢q*4 (suc (suc q)) ()
           help₁ : ∀ i → suc (suc (toℕ i)) ∣ 5 → ⊥
-          help₁ zero (divides q eq) = ⊥-elim (5≢q*2 q eq)
-          help₁ (suc zero) (divides q eq) = ⊥-elim (5≢q*3 q eq)
-          help₁ (suc (suc zero)) (divides q eq) = ⊥-elim (5≢q*4 q eq)
-          help₁ (suc (suc (suc ()))) x
+          help₁ = ?
       A⊇B prf | odd (suc (suc (suc zero)))
         = (s≤s (s≤s (s≤s z≤n))) , ((s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s z≤n)))))))) , help₁)
         where
@@ -180,12 +175,7 @@ module _  where
           7≢q*6 (suc zero) ()
           7≢q*6 (suc (suc q)) ()
           help₁ : ∀ i → suc (suc (toℕ i)) ∣ 7 → ⊥
-          help₁ zero (divides q eq) = ⊥-elim (7≢q*2 q eq)
-          help₁ (suc zero) (divides q eq) = ⊥-elim (7≢q*3 q eq)
-          help₁ (suc (suc zero)) (divides q eq) = ⊥-elim (7≢q*4 q eq)
-          help₁ (suc (suc (suc zero))) (divides q eq) = ⊥-elim (7≢q*5 q eq)
-          help₁ (suc (suc (suc (suc zero)))) (divides q eq) = ⊥-elim (7≢q*6 q eq)
-          help₁ (suc (suc (suc (suc (suc ()))))) x
+          help₁ = ?
       A⊇B (proj₁ , s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))) , proj₃) | odd (suc (suc (suc (suc k))))
 
   A⊇B×B⊇C⇒A⊇C : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂} {X : Set ℓ} {A : Pred X ℓ₀} {B : Pred X ℓ₁} {C : Pred X ℓ₂} →
