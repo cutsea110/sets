@@ -179,7 +179,12 @@ module _  where
           7≢q*6 (suc zero) ()
           7≢q*6 (suc (suc q)) ()
           help₁ : (i : Fin 5) → suc (suc (toℕ i)) ∣ 7 → ⊥
-          help₁ = {!!}
+          help₁ zero (divides q eq) = ⊥-elim (7≢q*2 q eq)
+          help₁ (suc zero) (divides q eq) = ⊥-elim (7≢q*3 q eq)
+          help₁ (suc (suc zero)) (divides q eq) = ⊥-elim (7≢q*4 q eq)
+          help₁ (suc (suc (suc zero))) (divides q eq) = ⊥-elim (7≢q*5 q eq)
+          help₁ (suc (suc (suc (suc zero)))) (divides q eq) = 7≢q*6 q eq
+          help₁ (suc (suc (suc (suc (suc ()))))) p
       A⊇B (proj₁ , s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s (s≤s ()))))))) , proj₃) | odd (suc (suc (suc (suc k))))
 
   A⊇B×B⊇C⇒A⊇C : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂} {X : Set ℓ} {A : Pred X ℓ₀} {B : Pred X ℓ₁} {C : Pred X ℓ₂} →
