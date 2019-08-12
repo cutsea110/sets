@@ -2,7 +2,7 @@ open import Agda.Primitive using (lzero; lsuc; _⊔_)
 open import Agda.Builtin.Equality using (_≡_; refl)
 open import Data.Nat hiding (_⊔_)
 open import Data.Unit using (⊤; tt)
-open import Data.String hiding (_≟_)
+open import Data.String hiding (_≟_; _≈_; _<_)
 open import Data.Empty using (⊥)
 open import Function using (_∘_; id; flip; const)
 open import Relation.Unary hiding (Decidable)
@@ -293,7 +293,7 @@ module _ where
   ∅∪A≈A {A = A} = record { eql = ∅∪A⊆A A , ∅∪A⊇A A }
     where
       ∅∪A⊆A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → ∅ ∪ A ⊆ A
-      ∅∪A⊆A A (inj₁ x∈∅) = ∅-⊆ A (⊥-elim x∈∅)
+      ∅∪A⊆A A (inj₁ ())
       ∅∪A⊆A A (inj₂ x∈A) = x∈A
 
       ∅∪A⊇A : ∀ {ℓ ℓ₀} {X : Set ℓ} (A : Pred X ℓ₀) → A ⊆ ∅ ∪ A
@@ -380,7 +380,7 @@ module _ where
       ∅∩A⊆∅ : ∀ {ℓ} {X : Set ℓ} (A : Pred X lzero) → ∅ ∩ A ⊆ ∅
       ∅∩A⊆∅ A x∈∅∩A = proj₁ x∈∅∩A
       ∅∩A⊇∅ : ∀ {ℓ} {X : Set ℓ} (A : Pred X lzero) → ∅ ∩ A ⊇ ∅
-      ∅∩A⊇∅ A x∈∅ = x∈∅ , ∅-⊆ A x∈∅
+      ∅∩A⊇∅ A ()
 
   [A∪B]∩C≈[A∩C]∪[B∩C] : ∀ {ℓ ℓ₀ ℓ₁ ℓ₂}{X : Set ℓ}{A : Pred X ℓ₀}{B : Pred X ℓ₁}{C : Pred X ℓ₂} →
                           (A ∪ B) ∩ C ≈ (A ∩ C) ∪ (B ∩ C)
